@@ -1,0 +1,8 @@
+@(dups: Set[Tuple4[String, String, String, String]])
+
+        <ul>
+            @for(adup <- dups) {
+            <li><a href="@adup._1">@adup._2</a></li>
+            }
+
+        </ul>

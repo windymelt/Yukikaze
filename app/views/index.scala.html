@@ -1,0 +1,10 @@
+@(message: String)
+
+@main("Yukikaze") {
+
+    <a href="@routes.UnCategorizedController.index">未整理 [@controllers.UnCategorizedController.restNumber]</a>
+    <a href="@routes.CategorizedController.index">整理済み</a>
+    <p>Yukikaze Image Categorize & Analyze System.</p>
+    <p>@{if(controllers.UnCategorizedController.restNumber == 0) "未分類画像はありません" else controllers.UnCategorizedController.restNumber.toString ++ "件の未分類の画像があります。"} </p>
+
+}

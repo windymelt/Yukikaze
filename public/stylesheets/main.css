@@ -1,0 +1,9 @@
+	#menu ul,#menu li { margin:0; padding:0; }
+	#menu li {list-style:none;float:left;}
+
+	#menu a { display:block;margin:0 auto;color:#fff;text-decoration:none; background:url(_right.png) right top no-repeat;}
+
+	#menu a span { display:block;text-align:center;background:url(_left.png) left top no-repeat; font:bold 12px/30px Arial, Helvetica, sans-serif;  padding:0 20px; }
+
+	#menu a:hover { background-position:right bottom;text-decoration:underline}
+	#menu a:hover span { background-position:left bottom;  }

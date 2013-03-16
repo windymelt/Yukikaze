@@ -1,0 +1,8 @@
+@(values: Seq[(String, String)])
+        <div id="menu">
+            <ul>
+            @for(a <- values) {
+            <li><a href="@a._2"><span>@a._1</span></a></li>
+            }
+            </ul>
+        </div>
