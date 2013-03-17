@@ -1,8 +1,45 @@
-@(dups: Set[Tuple4[String, String, String, String]])
+@(dups: Map[String, Vector[Tuple2[String, String]]])
+@main("重複しているファイルの確認"){
 
-        <ul>
-            @for(adup <- dups) {
-            <li><a href="@adup._1">@adup._2</a></li>
-            }
+<script xmlns="http://www.w3.org/1999/html">
+    $(function () {
+    $('.reallykillbutton').hide();
 
-        </ul>
+    $('.reallykillbutton').click(function () {
+    $(this).parent().parent().hide(200);
+    $.get("kill/".concat($(this).parent().attr('id')));
+    });
+
+    $('.killbutton').click(function () {
+    $(this).hide(100);
+    $(this).parent().children('.reallykillbutton').show(100);
+    });
+
+    $('.anmd5').mouseout(function () {
+    $(this).children().children('.reallykillbutton').hide(100);
+    $(this).children().children('.killbutton').show(100);
+    });
+
+    });
+</script>
+@if(!dups.isEmpty) {
+<div>
+    @for((md5, adup) <- dups) {
+    <div class="anmd5">
+        md5 hash: [@md5]
+        <br/>
+        @for(onepath <- adup) {
+        <div id="@onepath._1">
+            <a href="view/@onepath._1" class="imagelink" id="@onepath._2">@onepath._1</a> <a href="#"
+                                                                                             class="killbutton">[DELETE]</a><a
+                href="#" class="reallykillbutton">Really kill this file</a></li>
+        </div>
+        }
+    </div>
+    }
+
+</div>
+} else {
+<p>重複画像はありません</p>
+}
+}

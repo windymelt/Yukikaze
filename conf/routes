@@ -8,6 +8,8 @@ GET     /files                      controllers.Application.showFiles
 GET     /uncategorized              controllers.UnCategorizedController.index
 GET     /categorized                controllers.CategorizedController.index
 GET     /dups                       controllers.DuplicationController.index
+GET     /view/*id                   controllers.ImageViewerController.view(id)
+GET     /kill/*id                   controllers.ImageKillerController.kill(id)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,18 +1,23 @@
 @(title: String)(content: Html)
 
-<!DOCTYPE html>
 <html>
-    <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-    </head>
-    <body>
+<head>
+    <title>@title</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at(" stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at(" images/favicon.png")">
+    <script src="@routes.Assets.at(" javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+    <a href="/"><h1>Yukikaze</h1></a>
     @common.menu(Seq(
     ("未整理", "/uncategorized"),
     ("整理済み", "/categorized"),
-    ("ほげほげ", "about:blank")))
-        @content
-    </body>
+    ("重複ファイル", "/dups")))
+</div>
+<div id="content">
+    @content
+</div>
+<div id="footer"></div>
+</body>
 </html>

@@ -7,3 +7,54 @@
 
 	#menu a:hover { background-position:right bottom;text-decoration:underline}
 	#menu a:hover span { background-position:left bottom;  }
+
+	.anmd5 {margin:5px; padding:5px; background:#eee; border-style:double; border-color:#777;}
+
+	.warning {margin:5px; padding:5px background: #edd; border-style:double; border-color:#fee;}
+
+	div#header	{
+    	width: 100%;
+    	height: 100px;
+    	padding: 20px;
+    	background: #3E8AAE;
+    	border-bottom: 1px solid #CCC;
+    	color: #FFF;
+    	position: fixed; !important;
+        position: absolute;
+    	top:0;
+    	left:0;
+    }
+    a #header {
+        color: #fff
+        text-decoration: none;
+    }
+    #header a:link { color: #ffffff; text-decoration: none;}
+    #header a:visited { color: #ffffff; text-decoration: none;}
+    #header a:hover { color: #ffbb00; text-decoration: none;}
+    #header a:active { color: #ffbb00; text-decoration: none;}
+
+    * html div#header    {
+        position: absolute;
+        top: expression(eval(document.documentElement.scrollTop+0));
+    }
+
+
+    * html body {
+        overflow: hidden;
+        background: url(null) fixed;
+    }
+    div#content {
+        margin: 0;
+        padding: 150px 0 100px 0;
+    }
+
+    div#footer {
+        position: fixed !important;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #4E9ABE;
+        color: #fff;
+    }
