@@ -35,7 +35,7 @@ object DuplicationController extends Controller {
       "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "DA", "DB", "DC", "DD", "DE", "DF",
       "E0", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "EA", "EB", "EC", "ED", "EE", "EF",
       "F0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "FA", "FB", "FC", "FD", "FE", "FF")
-    def hexStr(vB: Vector[Byte]): String = vB.map {
+    def hexStr[A <% Vector[Byte]](vB: A): String = vB.map {
       (b: Byte) => hexArray(b.asInstanceOf[Int] & 0xff)
     }.mkString(" ")
 
@@ -44,8 +44,7 @@ object DuplicationController extends Controller {
     def md5(bA: Array[Byte]) = md.digest(bA)
 
     // 重複するベクターを抽出する関数。この関数が返すベクターに重複は無い。
-    def duplication(xs: Vector[Vector[Byte]]): Vector[Vector[Byte]] = xs.filter((p: Vector[Byte]) => xs.count(_ == p) > 1).distinct
-
+    def duplication(xs: scala.collection.mutable.ListBuffer[Vector[Byte]]): scala.collection.mutable.ListBuffer[Vector[Byte]] = xs.filter((p: Vector[Byte]) => xs.par.count(_ == p) > 1).distinct
     // あるパス以下のファイルを全て列挙する。フォルダは除外される。
     val fileCrawler: Path => PathSet[Path] = (p: Path) => p.***.filter((p: Path) => p.isFile)
 
@@ -53,28 +52,43 @@ object DuplicationController extends Controller {
     val rootPath = Path.fromString(Play.current.configuration.getString("images.root").get)
 
     // md5hashesに次々(Path, Vector[Byte)を格納してゆく。
-    var md5hashes: Vector[(Path, Vector[Byte])] = Vector()
-    fileCrawler(rootPath).foreach {
-      (p: Path) => md5hashes = md5hashes :+ (Tuple2(p, md5(p.byteArray).toVector))
+    var md5hashes: scala.collection.mutable.ListBuffer[(Path, Vector[Byte])] = scala.collection.mutable.ListBuffer()
+
+    val files: PathSet[Path] = fileCrawler(rootPath)
+    val size = files.size
+
+    println("All files are: %d" format(size))
+
+    var counter = 1
+    files.foreach {
+      (p: Path) => {
+        println("[%d/%d]" format(counter, size))
+
+        md5hashes += Tuple2(p, md5(p.byteArray).toVector)
+      }
+        counter += 1
     }
 
 
     // md5が重複しているファイルのmd5のみを抽出する。
-    val duplicatedmd5s: Vector[Vector[Byte]] = duplication(md5hashes.map(_._2))
+    val duplicatedmd5s: scala.collection.mutable.ListBuffer[Vector[Byte]] = duplication(md5hashes.map(_._2))
+
+    println("Duplication: %d" format(duplicatedmd5s.size))
 
     // (Path, Vector)の大小を比較する関数。
     val pathVectorBytelt: ((Path, Vector[Byte]), (Path, Vector[Byte])) => Boolean =
       (vBx: (Path, Vector[Byte]), vBy: (Path, Vector[Byte])) => vBx._2.toString() < vBy._2.toString()
 
     // 抽出されたmd5をキーとしてmd5hashesを抽出。
-    val dup = md5hashes.filter {
+    val dup = md5hashes.par.filter {
       (t: (Path, Vector[Byte])) => duplicatedmd5s.contains(t._2)
-    } sortWith {
+    }.seq.toVector sortWith {
       pathVectorBytelt
     }
-    val dupToShow: Map[String, Vector[(String, String)]] = dup.map {
+    val dupToShow: Map[String, Vector[(String, String)]] =
+      dup.par.map {
       (t: Tuple2[Path, Vector[Byte]]) => (t._1.relativize(rootPath).path, hexStr(t._2))
-    }.groupBy(_._2)
+    }.toVector.groupBy(_._2)
     /*val dup = md5hashes.filter{(t: (Path, Vector[Byte])) =>
       t match {
         case (p: Path, bA: Vector[Byte]) =>

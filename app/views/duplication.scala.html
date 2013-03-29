@@ -1,18 +1,22 @@
 @(dups: Map[String, Vector[Tuple2[String, String]]])
 @main("重複しているファイルの確認"){
 
-<script xmlns="http://www.w3.org/1999/html">
+<script>
     $(function () {
     $('.reallykillbutton').hide();
 
     $('.reallykillbutton').click(function () {
-    $(this).parent().parent().hide(200);
-    $.get("kill/".concat($(this).parent().attr('id')));
+        $(this).parent().parent().hide(200);
+        $.get("kill/".concat( $(this).parent().attr('id') ));
     });
 
     $('.killbutton').click(function () {
     $(this).hide(100);
     $(this).parent().children('.reallykillbutton').show(100);
+    });
+
+    $('.imagelink').click(function () {
+    $(this).parent().append('<br/>').append('<img src=\"'.concat($(this).attr('href')).concat('\" alt="image"></img>'))
     });
 
     $('.anmd5').mouseout(function () {
@@ -30,9 +34,9 @@
         <br/>
         @for(onepath <- adup) {
         <div id="@onepath._1">
-            <a href="view/@onepath._1" class="imagelink" id="@onepath._2">@onepath._1</a> <a href="#"
-                                                                                             class="killbutton">[DELETE]</a><a
-                href="#" class="reallykillbutton">Really kill this file</a></li>
+            <a href="view/@onepath._1" class="imagelink" id="@onepath._2">@onepath._1</a>
+            <a href="#" class="killbutton">[DELETE]</a>
+            <a href="#" class="reallykillbutton">Really kill this file</a>
         </div>
         }
     </div>

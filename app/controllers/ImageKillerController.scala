@@ -14,7 +14,7 @@ object ImageKillerController extends Controller {
   def kill(pathStr: String) = Action {
     import scalax.file.Path
 
-    println("kill:" + pathStr)
+    println("Killing:" + pathStr)
     val rootPath = Path.fromString(Play.current.configuration.getString("images.root").get)
 
     try {

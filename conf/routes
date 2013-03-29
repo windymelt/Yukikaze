@@ -8,8 +8,12 @@ GET     /files                      controllers.Application.showFiles
 GET     /uncategorized              controllers.UnCategorizedController.index
 GET     /categorized                controllers.CategorizedController.index
 GET     /dups                       controllers.DuplicationController.index
-GET     /view/*id                   controllers.ImageViewerController.view(id)
+GET     /files/*id                  controllers.ImageViewerController.view(id)
+GET     /view/*id                   controllers.ImageViewerController.viewhtml(id)
 GET     /kill/*id                   controllers.ImageKillerController.kill(id)
 
+GET     /view2/*id                  controllers.ImageViewerController.view2(id)
+GET     /diff                       controllers.ImageSimilarityController.calculateSimilarity(from: String, to: String)
+GET     /comp                       controllers.ImageSimilarityController.calculateAllSimurality(from: String)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

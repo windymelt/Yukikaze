@@ -1,0 +1,7 @@
+@(paths :Seq[(String, Double)])
+
+        @main("類似しているファイル") {
+            @for((p: String, d: Double) <- paths) {
+                <a href="view/@p" target="_blank">@p [相違度: @d]</a> <br />
+            }
+        }
